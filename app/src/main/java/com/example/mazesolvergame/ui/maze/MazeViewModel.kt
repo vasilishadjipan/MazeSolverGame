@@ -6,6 +6,7 @@ import com.example.mazesolvergame.data.maze.Maze
 import com.example.mazesolvergame.data.maze.MazeCell
 import com.example.mazesolvergame.data.solver.SolveResult
 import com.example.mazesolvergame.domain.model.AlgorithmType
+import com.example.mazesolvergame.domain.model.MazeSize
 import com.example.mazesolvergame.domain.usecase.GenerateMazeUseCase
 import com.example.mazesolvergame.domain.usecase.SolveMazeUseCase
 import kotlinx.coroutines.Job
@@ -15,13 +16,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class MazeViewModel(
-    private val size: Int,
-    private val algorithm: AlgorithmType,
+    val mazeSize: MazeSize,
+    val algorithm: AlgorithmType,
     private val generateMazeUseCase: GenerateMazeUseCase,
     private val solveMazeUseCase: SolveMazeUseCase
 ) : ViewModel() {
 
-    private val _maze = MutableStateFlow(generateMazeUseCase(size, size))
+    private val _maze = MutableStateFlow(generateMazeUseCase(mazeSize.size, mazeSize.size))
     val maze: StateFlow<Maze?> = _maze
 
     private val _explored = MutableStateFlow<List<MazeCell>>(emptyList())
@@ -37,7 +38,7 @@ class MazeViewModel(
         // cancel running solver
         solveJob?.cancel()
 
-        _maze.value = generateMazeUseCase(size, size)
+        _maze.value = generateMazeUseCase(mazeSize.size, mazeSize.size)
         _explored.value = emptyList()
         _solution.value = emptyList()
     }

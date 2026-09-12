@@ -42,7 +42,7 @@ fun MainMenuScreen(navController: NavController) {
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             MazeSize.values().forEach { size ->
                 SelectButton(
-                    text = size.name,
+                    text = size.text,
                     selected = selectedSize == size
                 ) {
                     selectedSize = size
@@ -61,7 +61,7 @@ fun MainMenuScreen(navController: NavController) {
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             AlgorithmType.values().forEach { algo ->
                 SelectButton(
-                    text = algo.name,
+                    text = algo.text,
                     selected = selectedAlgorithm == algo
                 ) {
                     selectedAlgorithm = algo

@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.mazesolvergame.domain.model.AlgorithmType
+import com.example.mazesolvergame.domain.model.MazeSize
 import com.example.mazesolvergame.ui.maze.MazeScreen
 import com.example.mazesolvergame.ui.maze.MazeViewModel
 import com.example.mazesolvergame.ui.menu.MainMenuScreen
@@ -31,15 +32,16 @@ fun NavGraph() {
             )
         ) { backStackEntry ->
 
-            val size = backStackEntry.arguments?.getInt("size") ?: 10
+            val sizeInt = backStackEntry.arguments?.getInt("size") ?: 10
+            val mazeSize = MazeSize.entries.find { it.size == sizeInt } ?: MazeSize.SMALL
             val algorithmStr = backStackEntry.arguments?.getString("algorithm") ?: "BFS"
             val algorithm = AlgorithmType.valueOf(algorithmStr)
 
             val viewModel: MazeViewModel = viewModel(
-                factory = MazeViewModelFactory(size, algorithm)
+                factory = MazeViewModelFactory(mazeSize, algorithm)
             )
 
-            MazeScreen(viewModel = viewModel)
+            MazeScreen(viewModel, navController)
         }
     }
 }
